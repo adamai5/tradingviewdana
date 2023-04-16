@@ -1,0 +1,23 @@
+//@version=4
+study(title="Example Indicator", overlay=true)
+
+// define inputs
+length = input(title="EMA Length", type=input.integer, defval=200)
+mult = input(title="Supertrend Multiplier", type=input.float, defval=3.0)
+atr_length = input(title="ATR Length", type=input.integer, defval=7)
+
+// calculate indicators
+ema = ema(close, length)
+supertrend_01 = (high + low) / 2 + mult * atr(atr_length)
+supertrend_02 = (high + low) / 2 + mult * atr(atr_length)
+supertrend_03 = (high + low) / 2 + mult * atr(atr_length)
+
+// define long entry condition
+long_entry_condition = close > ema and supertrend_01 > close and supertrend_02 > close and supertrend_03 > close
+
+// plot indicators and signals
+plot(ema, color=color.blue)
+plot(supertrend_01, color=color.green)
+plot(supertrend_02, color=color.red)
+plot(supertrend_03, color=color.orange)
+plotshape(long_entry_condition, style=shape.triangleup, color=color.green, location=location.belowbar, size=size.small)
